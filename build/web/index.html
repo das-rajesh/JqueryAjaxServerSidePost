@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <style>
+            .error{
+                color:red;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!--            <div>TODO write content</div>
+                        <div>TODO write content</div>
+                        <div>TODO write content</div>
+                        <div>TODO write content</div>
+                        <div>TODO write content</div>-->
+
+            <!--            <div class="row">
+                            <div>
+                                <label>First Name</label>
+                                <input type="text" id="first-name" name="first_name"/>
+                                <div class="error" style="display: none">Required</div>
+                            </div>
+                            <div>
+                                <label>Last Name</label>
+                                <input type="text" id="last-name" name="last_name"/>
+                                <div class="error" style="display: none">Required</div>
+                            </div>
+            
+                            <div id="result">
+            
+                            </div>
+            
+            
+                        </div>-->
+
+            <table class="table" id="customer-table">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </table>
+            <a href="javascript:void(0)" id="pop-btn" class="btn btn-info">
+                Populate Data
+            </a>
+            <!--            <div id="customer-dialog" style="display:none">
+                            <form>
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" id="name" class="form-controll"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="email" class="form-controll"/>
+                                </div>
+                                <div class="form-inline">
+                                    <label>Status</label>
+                                    <label>
+                                        <input type="checkbox" id="status" name="status" />
+                                        Inactive
+                                    </label>
+                                </div>
+                                                    <input type="hidden" id="id"/>
+                                <button type="button" id="cancel-btn" class="btn btn-danger">Cancel</button>
+                            </form>-->
+
+        </div>
+
+    </div>
+
+    <div id="customer-dialog" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <form id="customer-form">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="name" name="name" class="form-controll"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" name="email" class="form-controll"/>
+                        </div>
+                        <div class="form-inline">
+                            <label>Status</label>
+                            <label>
+                                <input type="checkbox" id="status"  name="status" />
+                                Inactive
+                            </label>
+                        </div>
+                        <input type="hidden" id="id"/>
+                        <button type="button" id="cancel-btn" class="btn btn-danger">Cancel</button>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="customer-id"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" id="save-btn" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script>
+        $(document).ready(function () {
+            $("#pop-btn").on('click', function () {
+//                    $.getJSON('server/customer.jsp', function (data) {
+//                        $("#name").val(data.name);
+//                        $("#email").val(data.email);
+//                        $("#status").prop('checked', data.status);
+//                    });
+
+                $("#dialog").modal();
+            });
+
+            $.getJSON('server/customerlist.jsp', function (data) {
+                var $table = $("#customer-table");
+                $.each(data, function (i, c) {
+                    var $tr = $("<tr data-id='" + c.id + "'/>")
+                            .css('cursor', 'pointer');
+                    $("<td/>").html(c.id).appendTo($tr);
+                    $("<td data-title='name'/>").html(c.name).appendTo($tr);
+                    $("<td data-title='email'/>").html(c.email).appendTo($tr);
+                    $("<td data-title='status'/>").html(c.status).appendTo($tr);
+                    $("<td/>").html('Edit Delete').appendTo($tr);
+                    $tr.on('click', function () {
+                        var $this = $(this);
+                        //console.log($this.prop('id'));
+                        console.log($this.attr('data-id'));
+                        populateCustomer($this.attr('data-id'));
+                    });
+                    $tr.appendTo($table);
+                });
+            });
+
+            $("#save-btn").on('click', function () {
+
+                $.post('server/customepost.jsp', $("#customer-form").serialize(), function (res) {
+                    console.log(res);
+                    var $id = $("#customer-id").val();
+                    $row = $("#customer-table tr[data-id=" + $id + "]");
+                    $row.find('td[data-title=name]').html($("#name").val());
+                    $row.find('td[data-title=email]').html($("#email").val());
+                    $row.find('td[data-title=status]').html($("#staus").val());
+                    console.log($row);
+                    $("#customer-dialog").modal('hide');
+                });
+
+            });
+
+            $("#cancel-btn").on('click', function () {
+                $("#customer-dialog").slideUp();
+            });
+        });
+        function populateCustomer(id) {
+            $.getJSON('server/customerlist.jsp', {id: id}, function (data) {
+                $("#customer-id").val(data.id);
+                $("#name").val(data.name);
+                $("#email").val(data.email);
+                $("#status").prop('checked', data.status);
+//                    $("#customer-dialog").slideDown();
+                $("#customer-dialog").modal();
+
+            });
+        }
+
+        //  $(document).ready(function () {
+
+
+
+        //   $("input[type=text]").on('keyup', function () {
+
+
+        //               $("#first-name").on('keyup', function () {
+//                    $("#result").html($(this).val());
+//                    if($(this).val().length==0){
+//                    $(".error").show();
+//
+//                }
+
+
+
+//                    var $error = $(this).parent().find(".error");
+//                    var $display = ($(this).val().length < 1);
+//                    $error.css('display',
+//                            $display ? 'block' : 'none');
+
+        //    });
+        //   });
+
+
+//              $(document).ready(function () {
+//             
+//                $('.container div').html("hello jquery")
+//                        .css('border','1px solid red')
+//                        .css('margin','10px')
+//                        .height('100px')
+//                        .width('100px')
+//                        .on('click',function (){
+//                           $(this).slideUp(2000,function (){
+//                               alert('finito');
+//                           });
+//                });
+//            });
+        //js
+        //
+//       var divs=document.getElementsByTagName('div');
+//       console.log(divs);
+//       for(var i=0;i<divs.length;i++){
+//           var div=divs[i];
+//           div.style.border='1px solid red';
+//           div.style.height='100px';
+//           div.style.margin='10px';
+//           div.style.width='100px';
+//           div.style.innerHTML='hello js';
+//       }
+    </script>
+</body>
+</html>
